@@ -1,4 +1,4 @@
-using System.Data;
+ï»¿using System.Data;
 using System.Drawing.Drawing2D;
 
 namespace CalculatorEmulator
@@ -12,36 +12,18 @@ namespace CalculatorEmulator
 
         string displayedExpression = string.Empty;
         bool startCalculation = false;
+        bool disableOperators = false;
+        bool disableMemory = true;
+        int indexMemory = -1;
+        //this is an array that will store the expressions that the user has confirmed witht the equals button
+        List<string> storedExpressions = new List<string>();
 
-        private void buttonNumbers_Click(object sender, EventArgs e)
+
+        private void buttonNumbers_Click(object sender, EventArgs e) //this is the event handler for the number buttons
         {
+            indexMemory = -1;
+            disableOperators = false;
             string currentInput = (sender as Button).Text;
-
-            if (currentInput == "(-)")
-            {
-                if (displayedExpression.Length == 0)
-                {
-                    currentInput = "-"; //this is for the negative button, so that the user can input negative numbers
-                }
-                else
-                {
-                    char lastChar = displayedExpression[displayedExpression.Length - 1];
-
-                    if (lastChar != '×' && lastChar != '÷' && lastChar != '+' && lastChar != '–')
-                    {
-                        return; //this is for the negative button, so that the user can't input the symbol after a number
-                    }
-                    else
-                    {
-                        currentInput = "-"; //this is for the negative button, so that the user can input negative numbers
-                    }
-                }
-            }
-
-            if (currentInput == ".")
-            {
-                btnDecimal.Enabled = false;
-            }
 
             // this is the code where if 0 is pressed and followed with a non-zero digit, the non-zero digit will only be displayed
             if (displayedExpression.Length > 0)
@@ -54,17 +36,15 @@ namespace CalculatorEmulator
                     // If the expression is just "0" and a non-decimal digit is added, replace the 0
                     displayedExpression = string.Empty;
                 }
-                else if ((lastChar == '+' || lastChar == '–' || lastChar == '×' || lastChar == '÷') && currentInput == "0")
-                {
-                    // If the last character is an operator and the current input is 0, do nothing
-                    // This ensures "5+0" remains valid but "5+098" becomes "5+98"
-                }
                 else if (displayedExpression.Length >= 2 &&
-                         (displayedExpression[displayedExpression.Length - 2] == '+' || displayedExpression[displayedExpression.Length - 2] == '–' || displayedExpression[displayedExpression.Length - 2] == '×' || displayedExpression[displayedExpression.Length - 2] == '÷') &&
+                         (displayedExpression[displayedExpression.Length - 2] == '+' || displayedExpression[displayedExpression.Length - 2] == 'â€“' ||
+                         displayedExpression[displayedExpression.Length - 2] == 'Ã—' || displayedExpression[displayedExpression.Length - 2] == 'Ã·' ||
+                         displayedExpression[displayedExpression.Length - 2] == '-' || displayedExpression[displayedExpression.Length - 2] == '(' ||
+                         displayedExpression[displayedExpression.Length - 2] == ')') &&
                          lastChar == '0' && currentInput != "." &&
                          char.IsDigit(currentInput[0]))
                 {
-                    // If the last two characters are "X+0" or the like and the current input is a non-decimal digit, remove the 0
+                    // If the last characters are "X+0" or the like and the current input is a non-decimal digit, remove the 0
                     displayedExpression = displayedExpression.Substring(0, displayedExpression.Length - 1);
                 }
             }
@@ -85,11 +65,134 @@ namespace CalculatorEmulator
             }
         }
 
+        private void btnNegative_Click(object sender, EventArgs e)
+        {
+            indexMemory = -1;
+            string currentInput = (sender as Button).Text;
+
+            if (displayedExpression.Length == 0)
+            {
+                currentInput = "-";
+            }
+            else
+            {
+                char lastChar = displayedExpression[displayedExpression.Length - 1];
+
+                if (lastChar != 'Ã—' && lastChar != 'Ã·' && lastChar != '+' && lastChar != 'â€“' && lastChar != '(' && lastChar != ')')
+                {
+                    return; //the user can't input a negative symbol if the last character is a number or a decimal
+                }
+                else
+                {
+                    currentInput = "-";
+                }
+            }
+
+            displayedExpression += currentInput;
+            tbxMainBox.Text = displayedExpression;
+            disableOperators = true;
+
+            if (startCalculation == true)
+            {
+                ComputeExpression();
+            }
+        }
+
+        private void btnDecimal_Click(object sender, EventArgs e)
+        {
+            indexMemory = -1;
+            disableOperators = false;
+            btnDecimal.Enabled = false;
+
+            string currentInput = (sender as Button).Text;
+            displayedExpression += currentInput;
+            tbxMainBox.Text = displayedExpression;
+
+            if (startCalculation == true)
+            {
+                ComputeExpression();
+            }
+        }
+
+        private void btnParenthesis_Click(object sender, EventArgs e)
+        {
+            indexMemory = -1;
+            disableOperators = false;
+            // this computes how many open and close parenthesis are in the expression
+            int openParenthesis = displayedExpression.Count(f => f == '(');
+            int closeParenthesis = displayedExpression.Count(f => f == ')');
+
+            //if the number of open parenthesis is equal to the number of close parenthesis, the user can input an open parenthesis
+            //if the number of open parenthesis is greater than the number of close parenthesis, the user can input a close parenthesis
+            if (openParenthesis == closeParenthesis)
+            {
+                if (sender == btnOpenParenthesis)
+                {
+                    displayedExpression += "(";
+                    tbxMainBox.Text = displayedExpression;
+
+                    if (startCalculation == true)
+                    {
+                        ComputeExpression();
+                    }
+                }
+                else
+                {
+                    return; //the user can't input a close parenthesis if there are no open parenthesis
+                }
+            }
+            else if (openParenthesis > closeParenthesis)
+            {
+                if (sender == btnOpenParenthesis)
+                {
+                    return; //the user can't input an open parenthesis if there is an open parenthesis that is not closed
+                }
+                else
+                {
+                    displayedExpression += ")";
+                    tbxMainBox.Text = displayedExpression;
+
+                    if (startCalculation == true)
+                    {
+                        ComputeExpression();
+                    }
+                }
+            }
+        }
+
         private void buttonOperators_Click(object sender, EventArgs e)
         {
+            indexMemory = -1;
             if (tbxMainBox.Text == string.Empty)
             {
-                return; //this is for the multiplication and division buttons, so that the user can't input the symbols at the start of the expression
+                return; //the user can't input operators first
+            }
+
+            if (disableOperators == true)
+            {
+                return;
+            }
+
+            if (displayedExpression.Length > 0)
+            {
+                char lastChar = displayedExpression[displayedExpression.Length - 1];
+                if (displayedExpression.Length == 1)
+                {
+                    if (lastChar == '.')
+                    {
+                        return;
+                    }
+                }
+                else if (displayedExpression.Length > 2)
+                {
+                    char secondLastChar = displayedExpression[displayedExpression.Length - 2];
+
+                    //prevents the operator from being inputted if the last character is a decimal and the second to the last char is not a number
+                    if (lastChar == '.' && !char.IsDigit(secondLastChar))
+                    {
+                        return;
+                    }
+                }
             }
 
             if (displayedExpression.Length > 0)
@@ -97,7 +200,7 @@ namespace CalculatorEmulator
                 char lastChar = displayedExpression[displayedExpression.Length - 1];
 
                 // this check if the last character is an operator and possibly replace it with the new one
-                if (lastChar == '×' || lastChar == '÷' || lastChar == '+' || lastChar == '–')
+                if (lastChar == 'Ã—' || lastChar == 'Ã·' || lastChar == '+' || lastChar == 'â€“')
                 {
                     displayedExpression = displayedExpression.Substring(0, displayedExpression.Length - 1) + (sender as Button).Text;
                     tbxMainBox.Text = displayedExpression;
@@ -115,26 +218,40 @@ namespace CalculatorEmulator
 
         private void btnEquals_Click(object sender, EventArgs e)
         {
-            if(displayedExpression.Length == 0)
+            indexMemory = -1;
+            disableOperators = false;
+            if (displayedExpression.Length == 0)
             {
                 return;
             }
 
-            string formattedExpression = displayedExpression.Replace("×", "*").Replace("÷", "/").Replace("–", "-");
+            string formattedExpression = displayedExpression.Replace("Ã—", "*").Replace("Ã·", "/").Replace("â€“", "-");
 
             try
             {
                 var result = new DataTable().Compute(formattedExpression, null);
-                double numericResult = Convert.ToDouble(result);
-                tbxMainBox.Text = Math.Round(numericResult, 9).ToString();
-                // I used the Compute() function from the System.Data namespace to calculate the result instead of the hardcoded version
-                // The purpose of the try-catch construct is to catch invalid expressions, wherein in the catch block, it will print "Syntax Error"
+                if (result.ToString() == "âˆž" || result.ToString() == "NaN")
+                {
+                    tbxMainBox.Text = "Math Error";
+                }
+                else
+                {
+                    double numericResult = Convert.ToDouble(result);
+                    tbxMainBox.Text = Math.Round(numericResult, 9).ToString();
+                    // I used the Compute() function from the System.Data namespace to calculate the result instead of the hardcoded version
+                    // The purpose of the try-catch construct is to catch invalid expressions, wherein in the catch block, it will print "Syntax Error"
+
+                    //this will add the expression to the list of expressions
+                    storedExpressions.Add(displayedExpression);
+                    disableMemory = false;
+                }
             }
             catch
             {
                 tbxMainBox.Text = "Syntax Error";
             }
 
+            displayedExpression = string.Empty;
             tbxSecondaryBox.Text = string.Empty;
             btnDecimal.Enabled = true;
         }
@@ -147,7 +264,7 @@ namespace CalculatorEmulator
 
                 int indexOperator = 0, indexDecimal = 0;
                 // this gets the index of the last operator and decimal in the expression
-                indexOperator = displayedExpression.LastIndexOfAny(new char[] { '+', '–', '×', '÷' });
+                indexOperator = displayedExpression.LastIndexOfAny(new char[] { '+', 'â€“', 'Ã—', 'Ã·' });
                 indexDecimal = displayedExpression.LastIndexOf('.');
 
                 //this determines who is more recent, the operator or the decimal
@@ -164,11 +281,17 @@ namespace CalculatorEmulator
                 tbxSecondaryBox.Text = string.Empty;
             }
 
+            if (displayedExpression.Length == 0)
+            {
+                disableMemory = false;
+            }
             ComputeExpression();
         }
 
         private void btnAllClear_Click(object sender, EventArgs e)
         {
+            indexMemory = -1;
+            disableMemory = false;
             btnDecimal.Enabled = true;
             displayedExpression = string.Empty;
             tbxMainBox.Text = string.Empty;
@@ -179,15 +302,24 @@ namespace CalculatorEmulator
         //this computes the expression whatever button the user presses
         private void ComputeExpression()
         {
-            string formattedExpression = displayedExpression.Replace("×", "*").Replace("÷", "/").Replace("–", "-");
+            string formattedExpression = displayedExpression.Replace("Ã—", "*").Replace("Ã·", "/").Replace("â€“", "-");
 
             try
             {
                 var result = new DataTable().Compute(formattedExpression, null);
-                double numericResult = Convert.ToDouble(result);
-                tbxSecondaryBox.Text = Math.Round(numericResult, 9).ToString();
-                // I used the Compute() function from the System.Data namespace to calculate the result instead of the hardcoded version
-                // The purpose of the try-catch construct is to catch invalid expressions, wherein in the catch block, it will print "Syntax Error"
+
+                //if the result is an infinity or a NaN, the program will display a Math error message
+                if (result.ToString() == "âˆž" || result.ToString() == "NaN")
+                {
+                    tbxSecondaryBox.Text = string.Empty;
+                }
+                else
+                {
+                    double numericResult = Convert.ToDouble(result);
+                    tbxSecondaryBox.Text = Math.Round(numericResult, 9).ToString();
+                    // I used the Compute() function from the System.Data namespace to calculate the result instead of the hardcoded version
+                    // The purpose of the try-catch construct is to catch invalid expressions, wherein in the catch block, it will print "Syntax Error"
+                }
             }
             catch
             {
@@ -252,5 +384,52 @@ namespace CalculatorEmulator
                 e.Graphics.DrawPath(pen, path);
             }
         }
+
+        private void buttonUpDown_Click(object sender, EventArgs e)
+        {
+            if (storedExpressions.Count == 0)
+            {
+                return;
+            }
+
+            if (sender == btnUp)
+            {
+                if (indexMemory == -1)
+                {
+                    indexMemory = storedExpressions.Count;
+                }
+                if(indexMemory == 0)
+                {
+                    return;
+                }
+                indexMemory--;
+                
+            }
+            else if (sender == btnDown)
+            {
+                if(indexMemory == -1)
+                {
+                    return;
+                }
+                if(indexMemory+1 == storedExpressions.Count)
+                {
+                    return;
+                }
+                indexMemory++;
+            }
+
+            try
+            {
+                displayedExpression = storedExpressions[indexMemory];
+                tbxMainBox.Text = displayedExpression;
+                ComputeExpression();
+            }
+            catch
+            {
+                return;
+            }
+            
+        }
+
     }
 }
