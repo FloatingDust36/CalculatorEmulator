@@ -60,11 +60,11 @@ namespace CalculatorEmulator
                     // This ensures "5+0" remains valid but "5+098" becomes "5+98"
                 }
                 else if (displayedExpression.Length >= 2 &&
-                         displayedExpression[displayedExpression.Length - 2] == '+' &&
+                         (displayedExpression[displayedExpression.Length - 2] == '+' || displayedExpression[displayedExpression.Length - 2] == '–' || displayedExpression[displayedExpression.Length - 2] == '×' || displayedExpression[displayedExpression.Length - 2] == '÷') &&
                          lastChar == '0' && currentInput != "." &&
                          char.IsDigit(currentInput[0]))
                 {
-                    // If the last two characters are "X+0" and the current input is a non-decimal digit, remove the 0
+                    // If the last two characters are "X+0" or the like and the current input is a non-decimal digit, remove the 0
                     displayedExpression = displayedExpression.Substring(0, displayedExpression.Length - 1);
                 }
             }
