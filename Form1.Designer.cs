@@ -97,6 +97,7 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(406, 865);
             panel1.TabIndex = 0;
+            panel1.Paint += pnlRoundedPanels_Paint;
             // 
             // panel2
             // 
@@ -156,26 +157,27 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(378, 812);
             panel2.TabIndex = 0;
+            panel2.Paint += pnlRoundedPanels_Paint;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Century Schoolbook", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.IndianRed;
             label2.Location = new Point(136, 54);
             label2.Name = "label2";
-            label2.Size = new Size(104, 28);
+            label2.Size = new Size(125, 25);
             label2.TabIndex = 52;
             label2.Text = "CLASSWIZ";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Bookman Old Style", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
             label1.Location = new Point(15, 12);
             label1.Name = "label1";
-            label1.Size = new Size(81, 32);
+            label1.Size = new Size(92, 28);
             label1.TabIndex = 51;
             label1.Text = "CASIO";
             // 
@@ -195,6 +197,7 @@
             btnClosingParenthesis.Text = ")";
             btnClosingParenthesis.TextAlign = ContentAlignment.TopCenter;
             btnClosingParenthesis.UseVisualStyleBackColor = false;
+            btnClosingParenthesis.Paint += btnRoundedButtons_Paint;
             // 
             // btnSine
             // 
@@ -210,6 +213,7 @@
             btnSine.TabIndex = 49;
             btnSine.Text = "sin";
             btnSine.UseVisualStyleBackColor = false;
+            btnSine.Paint += btnRoundedButtons_Paint;
             // 
             // btnReciprocal
             // 
@@ -225,6 +229,7 @@
             btnReciprocal.TabIndex = 48;
             btnReciprocal.Text = "𝑥⁻¹";
             btnReciprocal.UseVisualStyleBackColor = false;
+            btnReciprocal.Paint += btnRoundedButtons_Paint;
             // 
             // btnOpenParenthesis
             // 
@@ -241,6 +246,7 @@
             btnOpenParenthesis.TabIndex = 45;
             btnOpenParenthesis.Text = "(";
             btnOpenParenthesis.UseVisualStyleBackColor = false;
+            btnOpenParenthesis.Paint += btnRoundedButtons_Paint;
             // 
             // button42
             // 
@@ -256,6 +262,7 @@
             button42.TabIndex = 44;
             button42.Text = "𝑥";
             button42.UseVisualStyleBackColor = false;
+            button42.Paint += btnRoundedButtons_Paint;
             // 
             // btnSquare
             // 
@@ -271,6 +278,7 @@
             btnSquare.TabIndex = 43;
             btnSquare.Text = "𝑥²";
             btnSquare.UseVisualStyleBackColor = false;
+            btnSquare.Paint += btnRoundedButtons_Paint;
             // 
             // btnDecimalToFraction
             // 
@@ -286,6 +294,7 @@
             btnDecimalToFraction.TabIndex = 40;
             btnDecimalToFraction.Text = "S => D";
             btnDecimalToFraction.UseVisualStyleBackColor = false;
+            btnDecimalToFraction.Paint += btnRoundedButtons_Paint;
             // 
             // btnCosine
             // 
@@ -301,6 +310,7 @@
             btnCosine.TabIndex = 39;
             btnCosine.Text = "cos";
             btnCosine.UseVisualStyleBackColor = false;
+            btnCosine.Paint += btnRoundedButtons_Paint;
             // 
             // btnLogarithmic
             // 
@@ -316,6 +326,7 @@
             btnLogarithmic.TabIndex = 38;
             btnLogarithmic.Text = "log";
             btnLogarithmic.UseVisualStyleBackColor = false;
+            btnLogarithmic.Paint += btnRoundedButtons_Paint;
             // 
             // btnIntegralDifferentiation
             // 
@@ -331,6 +342,7 @@
             btnIntegralDifferentiation.TabIndex = 37;
             btnIntegralDifferentiation.Text = "∫";
             btnIntegralDifferentiation.UseVisualStyleBackColor = false;
+            btnIntegralDifferentiation.Paint += btnRoundedButtons_Paint;
             // 
             // btnMenuSetup
             // 
@@ -340,6 +352,7 @@
             btnMenuSetup.Size = new Size(45, 38);
             btnMenuSetup.TabIndex = 36;
             btnMenuSetup.UseVisualStyleBackColor = true;
+            btnMenuSetup.Paint += btnCircluarButtons_Paint;
             // 
             // btnENG
             // 
@@ -355,6 +368,7 @@
             btnENG.TabIndex = 35;
             btnENG.Text = "ENG";
             btnENG.UseVisualStyleBackColor = false;
+            btnENG.Paint += btnRoundedButtons_Paint;
             // 
             // btnDegrees
             // 
@@ -370,6 +384,7 @@
             btnDegrees.TabIndex = 34;
             btnDegrees.Text = "°' ''";
             btnDegrees.UseVisualStyleBackColor = false;
+            btnDegrees.Paint += btnRoundedButtons_Paint;
             // 
             // btnSquareRoot
             // 
@@ -385,6 +400,7 @@
             btnSquareRoot.TabIndex = 33;
             btnSquareRoot.Text = "√";
             btnSquareRoot.UseVisualStyleBackColor = false;
+            btnSquareRoot.Paint += btnRoundedButtons_Paint;
             // 
             // btnCalculateSolve
             // 
@@ -400,6 +416,7 @@
             btnCalculateSolve.TabIndex = 32;
             btnCalculateSolve.Text = "CALC";
             btnCalculateSolve.UseVisualStyleBackColor = false;
+            btnCalculateSolve.Paint += btnRoundedButtons_Paint;
             // 
             // btnAlpha
             // 
@@ -409,6 +426,7 @@
             btnAlpha.Size = new Size(45, 38);
             btnAlpha.TabIndex = 31;
             btnAlpha.UseVisualStyleBackColor = true;
+            btnAlpha.Paint += btnCircluarButtons_Paint;
             // 
             // btnMemoryPlus
             // 
@@ -424,6 +442,7 @@
             btnMemoryPlus.TabIndex = 30;
             btnMemoryPlus.Text = "M+";
             btnMemoryPlus.UseVisualStyleBackColor = false;
+            btnMemoryPlus.Paint += btnRoundedButtons_Paint;
             // 
             // btnTangent
             // 
@@ -439,6 +458,7 @@
             btnTangent.TabIndex = 29;
             btnTangent.Text = "tan";
             btnTangent.UseVisualStyleBackColor = false;
+            btnTangent.Paint += btnRoundedButtons_Paint;
             // 
             // btnNaturalLogarithmic
             // 
@@ -454,6 +474,7 @@
             btnNaturalLogarithmic.TabIndex = 28;
             btnNaturalLogarithmic.Text = "ln";
             btnNaturalLogarithmic.UseVisualStyleBackColor = false;
+            btnNaturalLogarithmic.Paint += btnRoundedButtons_Paint;
             // 
             // btnVariableX
             // 
@@ -472,6 +493,7 @@
             btnVariableX.Text = "𝑥";
             btnVariableX.TextAlign = ContentAlignment.TopCenter;
             btnVariableX.UseVisualStyleBackColor = false;
+            btnVariableX.Paint += btnRoundedButtons_Paint;
             // 
             // btnPowerOn
             // 
@@ -481,6 +503,7 @@
             btnPowerOn.Size = new Size(45, 38);
             btnPowerOn.TabIndex = 26;
             btnPowerOn.UseVisualStyleBackColor = true;
+            btnPowerOn.Paint += btnCircluarButtons_Paint;
             // 
             // btnEquals
             // 
@@ -492,6 +515,7 @@
             btnEquals.Text = "=";
             btnEquals.UseVisualStyleBackColor = true;
             btnEquals.Click += btnEquals_Click;
+            btnEquals.Paint += btnRoundedButtons_Paint;
             // 
             // button17
             // 
@@ -502,6 +526,7 @@
             button17.TabIndex = 24;
             button17.Text = "Ans";
             button17.UseVisualStyleBackColor = true;
+            button17.Paint += btnRoundedButtons_Paint;
             // 
             // button18
             // 
@@ -512,6 +537,7 @@
             button18.TabIndex = 23;
             button18.Text = "x10^x";
             button18.UseVisualStyleBackColor = true;
+            button18.Paint += btnRoundedButtons_Paint;
             // 
             // btnDecimal
             // 
@@ -524,6 +550,7 @@
             btnDecimal.Text = ".";
             btnDecimal.UseVisualStyleBackColor = true;
             btnDecimal.Click += buttonNumbers_Click;
+            btnDecimal.Paint += btnRoundedButtons_Paint;
             // 
             // btnZero
             // 
@@ -535,6 +562,7 @@
             btnZero.Text = "0";
             btnZero.UseVisualStyleBackColor = true;
             btnZero.Click += buttonNumbers_Click;
+            btnZero.Paint += btnRoundedButtons_Paint;
             // 
             // btnSubtraction
             // 
@@ -546,6 +574,7 @@
             btnSubtraction.Text = "–";
             btnSubtraction.UseVisualStyleBackColor = true;
             btnSubtraction.Click += buttonOperators_Click;
+            btnSubtraction.Paint += btnRoundedButtons_Paint;
             // 
             // btnAddtion
             // 
@@ -557,6 +586,7 @@
             btnAddtion.Text = "+";
             btnAddtion.UseVisualStyleBackColor = true;
             btnAddtion.Click += buttonOperators_Click;
+            btnAddtion.Paint += btnRoundedButtons_Paint;
             // 
             // btnThree
             // 
@@ -568,6 +598,7 @@
             btnThree.Text = "3";
             btnThree.UseVisualStyleBackColor = true;
             btnThree.Click += buttonNumbers_Click;
+            btnThree.Paint += btnRoundedButtons_Paint;
             // 
             // btnTwo
             // 
@@ -579,6 +610,7 @@
             btnTwo.Text = "2";
             btnTwo.UseVisualStyleBackColor = true;
             btnTwo.Click += buttonNumbers_Click;
+            btnTwo.Paint += btnRoundedButtons_Paint;
             // 
             // btnOne
             // 
@@ -590,6 +622,7 @@
             btnOne.Text = "1";
             btnOne.UseVisualStyleBackColor = true;
             btnOne.Click += buttonNumbers_Click;
+            btnOne.Paint += btnRoundedButtons_Paint;
             // 
             // btnDivision
             // 
@@ -601,6 +634,7 @@
             btnDivision.Text = "÷";
             btnDivision.UseVisualStyleBackColor = true;
             btnDivision.Click += buttonOperators_Click;
+            btnDivision.Paint += btnRoundedButtons_Paint;
             // 
             // btnMultiplication
             // 
@@ -612,6 +646,7 @@
             btnMultiplication.Text = "×";
             btnMultiplication.UseVisualStyleBackColor = true;
             btnMultiplication.Click += buttonOperators_Click;
+            btnMultiplication.Paint += btnRoundedButtons_Paint;
             // 
             // btnSix
             // 
@@ -623,6 +658,7 @@
             btnSix.Text = "6";
             btnSix.UseVisualStyleBackColor = true;
             btnSix.Click += buttonNumbers_Click;
+            btnSix.Paint += btnRoundedButtons_Paint;
             // 
             // btnFive
             // 
@@ -634,6 +670,7 @@
             btnFive.Text = "5";
             btnFive.UseVisualStyleBackColor = true;
             btnFive.Click += buttonNumbers_Click;
+            btnFive.Paint += btnRoundedButtons_Paint;
             // 
             // btnFour
             // 
@@ -645,6 +682,7 @@
             btnFour.Text = "4";
             btnFour.UseVisualStyleBackColor = true;
             btnFour.Click += buttonNumbers_Click;
+            btnFour.Paint += btnRoundedButtons_Paint;
             // 
             // btnAllClear
             // 
@@ -656,6 +694,7 @@
             btnAllClear.Text = "AC";
             btnAllClear.UseVisualStyleBackColor = true;
             btnAllClear.Click += btnAllClear_Click;
+            btnAllClear.Paint += btnRoundedButtons_Paint;
             // 
             // btnDelete
             // 
@@ -667,6 +706,7 @@
             btnDelete.Text = "DEL";
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += btnDelete_Click;
+            btnDelete.Paint += btnRoundedButtons_Paint;
             // 
             // btnNine
             // 
@@ -678,6 +718,7 @@
             btnNine.Text = "9";
             btnNine.UseVisualStyleBackColor = true;
             btnNine.Click += buttonNumbers_Click;
+            btnNine.Paint += btnRoundedButtons_Paint;
             // 
             // btnEight
             // 
@@ -689,6 +730,7 @@
             btnEight.Text = "8";
             btnEight.UseVisualStyleBackColor = true;
             btnEight.Click += buttonNumbers_Click;
+            btnEight.Paint += btnRoundedButtons_Paint;
             // 
             // btnSeven
             // 
@@ -700,6 +742,7 @@
             btnSeven.Text = "7";
             btnSeven.UseVisualStyleBackColor = true;
             btnSeven.Click += buttonNumbers_Click;
+            btnSeven.Paint += btnRoundedButtons_Paint;
             // 
             // btnStoreRecall
             // 
@@ -715,6 +758,7 @@
             btnStoreRecall.TabIndex = 5;
             btnStoreRecall.Text = "STO";
             btnStoreRecall.UseVisualStyleBackColor = false;
+            btnStoreRecall.Paint += btnRoundedButtons_Paint;
             // 
             // btnNegative
             // 
@@ -731,6 +775,7 @@
             btnNegative.Text = "(-)";
             btnNegative.UseVisualStyleBackColor = false;
             btnNegative.Click += buttonNumbers_Click;
+            btnNegative.Paint += btnRoundedButtons_Paint;
             // 
             // button3
             // 
@@ -746,6 +791,7 @@
             button3.TabIndex = 3;
             button3.Text = "𝑥/𝑥";
             button3.UseVisualStyleBackColor = false;
+            button3.Paint += btnRoundedButtons_Paint;
             // 
             // btnOptionsOR
             // 
@@ -761,6 +807,7 @@
             btnOptionsOR.TabIndex = 2;
             btnOptionsOR.Text = "OPTN";
             btnOptionsOR.UseVisualStyleBackColor = false;
+            btnOptionsOR.Paint += btnRoundedButtons_Paint;
             // 
             // btnShift
             // 
@@ -770,6 +817,7 @@
             btnShift.Size = new Size(45, 38);
             btnShift.TabIndex = 1;
             btnShift.UseVisualStyleBackColor = true;
+            btnShift.Paint += btnCircluarButtons_Paint;
             // 
             // panel3
             // 
@@ -779,6 +827,7 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(344, 167);
             panel3.TabIndex = 0;
+            panel3.Paint += pnlRoundedPanels_Paint;
             // 
             // panel4
             // 
@@ -789,6 +838,7 @@
             panel4.Name = "panel4";
             panel4.Size = new Size(301, 124);
             panel4.TabIndex = 0;
+            panel4.Paint += pnlRoundedPanels_Paint;
             // 
             // tbxSecondaryBox
             // 

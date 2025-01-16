@@ -1,4 +1,5 @@
 using System.Data;
+using System.Drawing.Drawing2D;
 
 namespace CalculatorEmulator
 {
@@ -18,7 +19,7 @@ namespace CalculatorEmulator
 
             if (currentInput == "(-)")
             {
-                if(displayedExpression.Length == 0)
+                if (displayedExpression.Length == 0)
                 {
                     currentInput = "-"; //this is for the negative button, so that the user can input negative numbers
                 }
@@ -43,9 +44,29 @@ namespace CalculatorEmulator
             }
 
             // this is the code where if 0 is pressed and followed with a non-zero digit, the non-zero digit will only be displayed
-            if (displayedExpression.Length > 0 && displayedExpression[displayedExpression.Length - 1] == '0' && currentInput != ".")
+            if (displayedExpression.Length > 0)
             {
-                displayedExpression = displayedExpression.Substring(0, displayedExpression.Length - 1);
+                char lastChar = displayedExpression[displayedExpression.Length - 1];
+
+                // Check for invalid leading zero cases
+                if (lastChar == '0' && currentInput != "." && displayedExpression.Length == 1)
+                {
+                    // If the expression is just "0" and a non-decimal digit is added, replace the 0
+                    displayedExpression = string.Empty;
+                }
+                else if ((lastChar == '+' || lastChar == '–' || lastChar == '×' || lastChar == '÷') && currentInput == "0")
+                {
+                    // If the last character is an operator and the current input is 0, do nothing
+                    // This ensures "5+0" remains valid but "5+098" becomes "5+98"
+                }
+                else if (displayedExpression.Length >= 2 &&
+                         displayedExpression[displayedExpression.Length - 2] == '+' &&
+                         lastChar == '0' && currentInput != "." &&
+                         char.IsDigit(currentInput[0]))
+                {
+                    // If the last two characters are "X+0" and the current input is a non-decimal digit, remove the 0
+                    displayedExpression = displayedExpression.Substring(0, displayedExpression.Length - 1);
+                }
             }
 
             displayedExpression += currentInput;
@@ -94,12 +115,18 @@ namespace CalculatorEmulator
 
         private void btnEquals_Click(object sender, EventArgs e)
         {
+            if(displayedExpression.Length == 0)
+            {
+                return;
+            }
 
             string formattedExpression = displayedExpression.Replace("×", "*").Replace("÷", "/").Replace("–", "-");
 
             try
             {
-                tbxMainBox.Text = new DataTable().Compute(formattedExpression, null).ToString();
+                var result = new DataTable().Compute(formattedExpression, null);
+                double numericResult = Convert.ToDouble(result);
+                tbxMainBox.Text = Math.Round(numericResult, 9).ToString();
                 // I used the Compute() function from the System.Data namespace to calculate the result instead of the hardcoded version
                 // The purpose of the try-catch construct is to catch invalid expressions, wherein in the catch block, it will print "Syntax Error"
             }
@@ -156,7 +183,9 @@ namespace CalculatorEmulator
 
             try
             {
-                tbxSecondaryBox.Text = new DataTable().Compute(formattedExpression, null).ToString();
+                var result = new DataTable().Compute(formattedExpression, null);
+                double numericResult = Convert.ToDouble(result);
+                tbxSecondaryBox.Text = Math.Round(numericResult, 9).ToString();
                 // I used the Compute() function from the System.Data namespace to calculate the result instead of the hardcoded version
                 // The purpose of the try-catch construct is to catch invalid expressions, wherein in the catch block, it will print "Syntax Error"
             }
@@ -166,9 +195,62 @@ namespace CalculatorEmulator
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void btnRoundedButtons_Paint(object sender, PaintEventArgs e)
         {
+            Button btn = sender as Button;
+            GraphicsPath path = new GraphicsPath();
 
+            int radius = 20; // Adjust the corner radius
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(btn.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(btn.Width - radius, btn.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, btn.Height - radius, radius, radius), 90, 90);
+            path.CloseAllFigures();
+
+            btn.Region = new Region(path);
+
+            // Optionally, draw a border
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            using (Pen pen = new Pen(Color.Black, 2))
+            {
+                e.Graphics.DrawPath(pen, path);
+            }
+        }
+
+        private void btnCircluarButtons_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            int diameter = Math.Min(btn.Width, btn.Height); // Ensures the button becomes circular even if Width and Height differ
+            GraphicsPath path = new GraphicsPath();
+
+            path.AddEllipse(0, 0, diameter, diameter); // Create a circular path
+            btn.Region = new Region(path);
+
+            // Optionally adjust button size to match a perfect circle
+            btn.Width = diameter;
+            btn.Height = diameter;
+        }
+
+        private void pnlRoundedPanels_Paint(object sender, PaintEventArgs e)
+        {
+            Panel pnl = sender as Panel;
+            GraphicsPath path = new GraphicsPath();
+
+            int radius = 25; // Adjust the corner radius
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(pnl.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(pnl.Width - radius, pnl.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, pnl.Height - radius, radius, radius), 90, 90);
+            path.CloseAllFigures();
+
+            pnl.Region = new Region(path);
+
+            // Optionally, draw a border
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            using (Pen pen = new Pen(Color.Black, 2))
+            {
+                e.Graphics.DrawPath(pen, path);
+            }
         }
     }
 }
